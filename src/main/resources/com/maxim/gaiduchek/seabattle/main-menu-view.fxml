@@ -24,7 +24,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                mnemonicParsing="false" onMouseClicked="#onGameSetupStartClick" prefHeight="60.0" prefWidth="120.0"
+                mnemonicParsing="false" onMouseClicked="#onGameSetupClick" prefHeight="60.0" prefWidth="120.0"
                 style="-fx-background-color: #323232;" text="Почати гру!"
                 textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                 GridPane.rowIndex="1" GridPane.valignment="CENTER">
