@@ -23,7 +23,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" vgrow="SOMETIMES"/>
             <RowConstraints vgrow="SOMETIMES"/>
         </rowConstraints>
-        <GridPane fx:id="grid" gridLinesVisible="true">
+        <GridPane fx:id="gridPane" gridLinesVisible="true">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0"/>

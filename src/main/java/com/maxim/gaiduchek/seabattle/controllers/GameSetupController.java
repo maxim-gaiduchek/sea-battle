@@ -4,20 +4,14 @@ import com.maxim.gaiduchek.seabattle.App;
 import com.maxim.gaiduchek.seabattle.Game;
 import com.maxim.gaiduchek.seabattle.entities.Grid;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
 
 public class GameSetupController {
 
     @FXML
-    private GridPane grid;
+    private GridPane gridPane;
 
     public void initialize() {
         Game.generatePlayerGrid();
@@ -25,7 +19,7 @@ public class GameSetupController {
     }
 
     @FXML
-    protected void onGameStartClick() throws IOException {
+    private void onGameStartClick() throws IOException {
         App.openMainGameView();
     }
 
@@ -33,9 +27,9 @@ public class GameSetupController {
         for (int x = 0; x <= Grid.MAX_X; x++) {
             for (int y = 0; y <= Grid.MAX_Y; y++) {
                 if (Game.playerGrid.hasShip(x, y)) {
-                    grid.add(App.getShipPartImageView(), x, y);
+                    gridPane.add(App.getShipPartImageView(), x, y);
                 } else if (Game.playerGrid.hasShipNearby(x, y)) {
-                    grid.add(App.getMissedShotImageView(), x, y);
+                    gridPane.add(App.getMissedShotImageView(), x, y);
                 }
             }
         }

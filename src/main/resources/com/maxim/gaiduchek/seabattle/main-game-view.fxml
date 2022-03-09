@@ -6,14 +6,14 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1245.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1245.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maxim.gaiduchek.seabattle.controllers.MainGameController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="610.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="610.0" />
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -25,7 +25,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
-        <GridPane gridLinesVisible="true">
+        <GridPane fx:id="playerGripPane" gridLinesVisible="true">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" />
@@ -199,9 +199,9 @@
                 </font>
             </Label>
         </GridPane>
-      <GridPane.margin>
-         <Insets bottom="6.0" left="11.0" right="11.0" top="6.0" />
-      </GridPane.margin>
+        <GridPane.margin>
+            <Insets bottom="6.0" left="11.0" right="11.0" top="6.0" />
+        </GridPane.margin>
     </GridPane>
     <GridPane GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
         <columnConstraints>
@@ -212,7 +212,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
-        <GridPane fx:id="grid" gridLinesVisible="true">
+        <GridPane fx:id="botGridPane" gridLinesVisible="true">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" />
@@ -386,19 +386,19 @@
                 </font>
             </Label>
         </GridPane>
-      <GridPane.margin>
-         <Insets bottom="6.0" left="11.0" right="11.0" top="6.0" />
-      </GridPane.margin>
+        <GridPane.margin>
+            <Insets bottom="6.0" left="11.0" right="11.0" top="6.0" />
+        </GridPane.margin>
     </GridPane>
-   <Line endY="350.0" startY="-350.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" />
-   <Label text="ВИ" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-      <font>
-         <Font size="50.0" />
-      </font>
-   </Label>
-   <Label text="СУПРОТИВНИК" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-      <font>
-         <Font size="50.0" />
-      </font>
-   </Label>
+    <Line endY="350.0" startY="-350.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" />
+    <Label text="ВИ" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <font>
+            <Font size="50.0" />
+        </font>
+    </Label>
+    <Label text="СУПРОТИВНИК" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <font>
+            <Font size="50.0" />
+        </font>
+    </Label>
 </GridPane>

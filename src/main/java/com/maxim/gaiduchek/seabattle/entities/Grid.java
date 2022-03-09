@@ -1,5 +1,8 @@
 package com.maxim.gaiduchek.seabattle.entities;
 
+import com.maxim.gaiduchek.seabattle.App;
+import javafx.scene.layout.GridPane;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -8,11 +11,11 @@ public class Grid {
     public static final int MAX_X = 10, MAX_Y = 10;
 
     private final Ship[][] grid = new Ship[MAX_Y + 1][MAX_X + 1];
-    private final Shot[][] shots = new Shot[MAX_Y + 1][MAX_X + 1];
+    private final boolean[][] shots = new boolean[MAX_Y + 1][MAX_X + 1];
 
     public Grid() {
         for (Ship[] row : grid) Arrays.fill(row, null);
-        for (Shot[] row : shots) Arrays.fill(row, Shot.NONE);
+        for (boolean[] row : shots) Arrays.fill(row, false);
 
         Random random = new Random();
 
@@ -60,12 +63,32 @@ public class Grid {
         outputGrid();
     }
 
+    // getters
+
     private Ship getShip(Coordinates coordinates) {
         return getShip(coordinates.getX(), coordinates.getY());
     }
 
     private Ship getShip(int x, int y) {
         return grid[y][x];
+    }
+
+    private boolean isNotShotted(int x, int y) {
+        return !shots[y][x];
+    }
+
+    private boolean isDestroyed(Ship ship) {
+        Coordinates begin = ship.getBegin(), end = ship.getEnd();
+
+        for (int x = begin.getX(); x <= end.getX(); x++) {
+            for (int y = begin.getY(); y <= end.getY(); y++) {
+                if (isNotShotted(x, y)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public boolean hasShip(Coordinates coordinates) {
@@ -78,6 +101,10 @@ public class Grid {
 
     private void setShip(Ship ship, int x, int y) {
         grid[y][x] = ship;
+    }
+
+    private void setShotted(int x, int y) {
+        shots[y][x] = true;
     }
 
     public boolean hasShipNearby(Coordinates coordinates) {
@@ -96,6 +123,46 @@ public class Grid {
         return false;
     }
 
+    // other
+
+    public void shot(GridPane gridPane, int x, int y) {
+        if (isNotShotted(x, y)) {
+            setShotted(x, y);
+
+            if (hasShip(x, y)) {
+                gridPane.add(App.getShipPartImageView(), x, y);
+
+                Ship ship = getShip(x, y);
+
+                if (isDestroyed(ship)) {
+                    Coordinates begin = ship.getBegin(), end = ship.getEnd();
+
+                    for (int cx = Math.max(begin.getX() - 1, 0); cx <= Math.min(end.getX() + 1, Grid.MAX_X); cx++) {
+                        for (int cy = Math.max(begin.getY() - 1, 0); cy <= Math.min(end.getY() + 1, Grid.MAX_Y); cy++) {
+                            if (!hasShip(cx, cy) && isNotShotted(cx, cy)) {
+                                gridPane.add(App.getMissedShotImageView(), cx, cy);
+                            }
+                        }
+                    }
+                }
+            } else {
+                gridPane.add(App.getMissedShotImageView(), x, y);
+            }
+        }
+    }
+
+    public boolean isDefeated() {
+        for (int x = 0; x <= MAX_X; x++) {
+            for (int y = 0; y <= MAX_Y; y++) {
+                if (hasShip(x, y) && isNotShotted(x, y)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     private void outputGrid() {
         for (Ship[] row : grid) {
             for (Ship ship : row) {
@@ -107,6 +174,6 @@ public class Grid {
     }
 
     public enum Shot {
-        NONE, SHOTTED
+        NONE, MISSED, HIT
     }
 }

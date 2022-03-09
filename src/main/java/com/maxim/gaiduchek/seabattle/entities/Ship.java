@@ -9,6 +9,14 @@ public class Ship {
         this.end = end;
     }
 
+    public Coordinates getBegin() {
+        return begin;
+    }
+
+    public Coordinates getEnd() {
+        return end;
+    }
+
     public int getLength() {
         return Math.abs(begin.getX() == end.getX() ? begin.getY() - end.getY() : begin.getX() - end.getX()) + 1;
     }

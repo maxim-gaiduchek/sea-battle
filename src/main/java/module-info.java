@@ -6,5 +6,6 @@ module com.maxim.gaiduchek.seabattle {
     opens com.maxim.gaiduchek.seabattle to javafx.fxml;
     exports com.maxim.gaiduchek.seabattle;
     exports com.maxim.gaiduchek.seabattle.controllers;
+    exports com.maxim.gaiduchek.seabattle.entities;
     opens com.maxim.gaiduchek.seabattle.controllers to javafx.fxml;
 }
