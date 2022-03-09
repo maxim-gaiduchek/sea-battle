@@ -1,10 +1,13 @@
 package com.maxim.gaiduchek.seabattle;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -44,6 +47,10 @@ public class App extends Application {
 
     // images
 
+    private static Image getAppIcon() {
+        return new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/icon.png")));
+    }
+
     public static ImageView getShipPartImageView() {
         return getGridCellImageView("ship-part");
     }
@@ -65,16 +72,36 @@ public class App extends Application {
         return imageView;
     }
 
+    // alerts
+
+    public static void openEndGameAlert(String prompt) {
+        prompt += "\n\nХочете пограти ще раз?";
+        Alert alert = new Alert(Alert.AlertType.NONE, prompt, ButtonType.YES, ButtonType.NO);
+
+        alert.setTitle("SeaBattle");
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(getAppIcon());
+        alert.showAndWait();
+
+        try {
+            if (alert.getResult() == ButtonType.YES) {
+                App.openGameSetupView();
+            } else if (alert.getResult() == ButtonType.NO) {
+                Platform.exit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
+
     // main
 
     @Override
     public void start(Stage stage) throws IOException {
         App.stage = stage;
 
-        Image icon = new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/icon.png")));
-
         stage.setTitle("SeaBattle");
-        stage.getIcons().add(icon);
+        stage.getIcons().add(getAppIcon());
         stage.setResizable(false);
 
         openMainMenuView();

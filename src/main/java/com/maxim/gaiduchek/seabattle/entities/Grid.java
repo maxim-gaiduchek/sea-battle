@@ -73,7 +73,7 @@ public class Grid {
         return grid[y][x];
     }
 
-    private boolean isNotShotted(int x, int y) {
+    public boolean isNotShotted(int x, int y) {
         return !shots[y][x];
     }
 

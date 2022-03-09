@@ -11,15 +11,11 @@ public class Game {
     private static GridPane playerGridPane, botGridPane;
 
     public static void generatePlayerGrid() {
-        if (playerGrid == null) {
-            playerGrid = new Grid();
-        }
+        playerGrid = new Grid();
     }
 
     public static void generateBotGrid() {
-        if (botGrid == null) {
-            botGrid = new Grid();
-        }
+        botGrid = new Grid();
     }
 
     public static void setPlayerGridPane(GridPane playerGridPane) {
@@ -35,6 +31,8 @@ public class Game {
 
         if (!botGrid.isDefeated()) {
             botShot();
+        } else {
+            App.openEndGameAlert("Ви вийграли!");
         }
     }
 
@@ -42,6 +40,15 @@ public class Game {
         Random random = new Random();
         int x = random.nextInt(Grid.MAX_X + 1), y = random.nextInt(Grid.MAX_Y + 1);
 
+        /*while (!playerGrid.hasShip(x, y) || !playerGrid.isNotShotted(x, y)) {
+            x = random.nextInt(Grid.MAX_X + 1);
+            y = random.nextInt(Grid.MAX_Y + 1);
+        }*/
+
         playerGrid.shot(playerGridPane, x, y);
+
+        if (playerGrid.isDefeated()) {
+            App.openEndGameAlert("Ви програли \uD83D\uDE14");
+        }
     }
 }
