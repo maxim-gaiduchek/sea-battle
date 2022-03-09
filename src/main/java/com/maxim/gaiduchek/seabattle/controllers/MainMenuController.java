@@ -8,7 +8,7 @@ import java.io.IOException;
 public class MainMenuController {
 
     @FXML
-    protected void onGameSetupClick() throws IOException {
+    private void onGameSetupClick() throws IOException {
         App.openGameSetupView();
     }
 }
