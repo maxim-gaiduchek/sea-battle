@@ -1,7 +1,9 @@
 package com.maxim.gaiduchek.seabattle;
 
 import com.maxim.gaiduchek.seabattle.entities.Grid;
+import javafx.animation.PauseTransition;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 import java.util.Random;
 
@@ -9,6 +11,7 @@ public class Game {
 
     public static Grid playerGrid, botGrid;
     private static GridPane playerGridPane, botGridPane;
+    private static boolean isPlayerMoving = true;
 
     public static void generatePlayerGrid() {
         playerGrid = new Grid();
@@ -27,28 +30,40 @@ public class Game {
     }
 
     public static void playerShot(int x, int y) {
-        botGrid.shot(botGridPane, x, y);
+        if (isPlayerMoving) {
+            isPlayerMoving = botGrid.shot(botGridPane, x, y);
 
-        if (!botGrid.isDefeated()) {
-            botShot();
-        } else {
-            App.openEndGameAlert("Ви вийграли!");
+            if (!isPlayerMoving) {
+                if (!botGrid.isDefeated()) {
+                    botShot();
+                } else {
+                    App.openEndGameAlert("Ви вийграли!");
+                }
+            }
         }
     }
 
     private static void botShot() {
         Random random = new Random();
-        int x = random.nextInt(Grid.MAX_X + 1), y = random.nextInt(Grid.MAX_Y + 1);
+        PauseTransition pause = new PauseTransition(Duration.millis(500));
 
-        /*while (!playerGrid.hasShip(x, y) || !playerGrid.isNotShotted(x, y)) {
-            x = random.nextInt(Grid.MAX_X + 1);
-            y = random.nextInt(Grid.MAX_Y + 1);
-        }*/
+        pause.setOnFinished(actionEvent -> {
+            int x, y;
 
-        playerGrid.shot(playerGridPane, x, y);
+            do {
+                x = random.nextInt(Grid.MAX_X + 1);
+                y = random.nextInt(Grid.MAX_Y + 1);
+            } while (!playerGrid.isNotShotted(x, y)); // !playerGrid.hasShip(x, y) ||
 
-        if (playerGrid.isDefeated()) {
-            App.openEndGameAlert("Ви програли \uD83D\uDE14");
-        }
+            isPlayerMoving = !playerGrid.shot(playerGridPane, x, y);
+
+            if (playerGrid.isDefeated()) {
+                App.openEndGameAlert("Ви програли \uD83D\uDE14");
+            } else if (!isPlayerMoving) {
+                pause.play();
+            }
+        });
+
+        pause.play();
     }
 }

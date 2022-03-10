@@ -104,6 +104,8 @@ public class App extends Application {
         stage.getIcons().add(getAppIcon());
         stage.setResizable(false);
 
+        stage.setOnCloseRequest(windowEvent -> System.out.println("Closing"));
+
         openMainMenuView();
 
         stage.show();

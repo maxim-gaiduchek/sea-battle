@@ -125,7 +125,7 @@ public class Grid {
 
     // other
 
-    public void shot(GridPane gridPane, int x, int y) {
+    public boolean shot(GridPane gridPane, int x, int y) {
         if (isNotShotted(x, y)) {
             setShotted(x, y);
 
@@ -145,10 +145,16 @@ public class Grid {
                         }
                     }
                 }
+
+                return true;
             } else {
                 gridPane.add(App.getMissedShotImageView(), x, y);
+
+                return false;
             }
         }
+
+        return false;
     }
 
     public boolean isDefeated() {
