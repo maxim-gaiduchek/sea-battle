@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
           prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.maxim.gaiduchek.seabattle.controllers.GameSetupController">
+          fx:controller="com.maxim.gaiduchek.seabattle.controllers.fxml.GameSetupController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="600.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0"/>

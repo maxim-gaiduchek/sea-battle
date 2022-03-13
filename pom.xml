@@ -6,8 +6,9 @@
 
     <groupId>com.maxim.gaiduchek</groupId>
     <artifactId>SeaBattle</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>SeaBattle</name>
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,12 +19,13 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17-ea+11</version>
+            <version>11</version>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17-ea+11</version>
+            <version>11</version>
         </dependency>
     </dependencies>
 
@@ -34,21 +36,36 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.6</version>
+                <configuration>
+                    <mainClass>com.maxim.gaiduchek.seabattle.Main</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
-                        <id>default-cli</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
                         <configuration>
-                            <mainClass>com.maxim.gaiduchek.seabattle/com.maxim.gaiduchek.seabattle.App
-                            </mainClass>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.maxim.gaiduchek.seabattle.Main</mainClass>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>

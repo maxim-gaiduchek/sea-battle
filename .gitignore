@@ -1,3 +1,5 @@
-/out/
 /target/
 /src/main/java/META-INF/
+/config.xml
+/launch4j.log
+/dependency-reduced-pom.xml

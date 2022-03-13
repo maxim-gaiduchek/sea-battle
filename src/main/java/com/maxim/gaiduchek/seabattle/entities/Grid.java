@@ -1,6 +1,6 @@
 package com.maxim.gaiduchek.seabattle.entities;
 
-import com.maxim.gaiduchek.seabattle.App;
+import com.maxim.gaiduchek.seabattle.controllers.App;
 import javafx.scene.layout.GridPane;
 
 import java.util.Arrays;
