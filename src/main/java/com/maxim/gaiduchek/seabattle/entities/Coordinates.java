@@ -11,11 +11,11 @@ public class Coordinates {
 
     // getters
 
-    public int getX() {
+    public int x() {
         return x;
     }
 
-    public int getY() {
+    public int y() {
         return y;
     }
 
@@ -42,6 +42,7 @@ public class Coordinates {
         return "Coordinate{" +
                 "x=" + x +
                 ", y=" + y +
+                " (" + (x + 1) + "-" + ((char) ('a' + y)) + ")" +
                 '}';
     }
 }

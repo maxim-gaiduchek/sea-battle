@@ -38,8 +38,8 @@ public class Grid {
 
                     boolean toBreak = true;
 
-                    for (int x = begin.getX(); x <= end.getX() && toBreak; x++) {
-                        for (int y = begin.getY(); y <= end.getY() && toBreak; y++) {
+                    for (int x = begin.x(); x <= end.x() && toBreak; x++) {
+                        for (int y = begin.y(); y <= end.y() && toBreak; y++) {
                             if (hasShipNearby(x, y)) {
                                 toBreak = false;
                             }
@@ -51,8 +51,8 @@ public class Grid {
 
                 Ship ship = new Ship(begin, end);
 
-                for (int x = begin.getX(); x <= end.getX(); x++) {
-                    for (int y = begin.getY(); y <= end.getY(); y++) {
+                for (int x = begin.x(); x <= end.x(); x++) {
+                    for (int y = begin.y(); y <= end.y(); y++) {
                         setShip(ship, x, y);
                     }
                 }
@@ -66,7 +66,7 @@ public class Grid {
     // getters
 
     private Ship getShip(Coordinates coordinates) {
-        return getShip(coordinates.getX(), coordinates.getY());
+        return getShip(coordinates.x(), coordinates.y());
     }
 
     private Ship getShip(int x, int y) {
@@ -77,11 +77,15 @@ public class Grid {
         return !shots[y][x];
     }
 
+    public boolean isDestroyed(int x, int y) {
+        return isDestroyed(getShip(x, y));
+    }
+
     private boolean isDestroyed(Ship ship) {
         Coordinates begin = ship.getBegin(), end = ship.getEnd();
 
-        for (int x = begin.getX(); x <= end.getX(); x++) {
-            for (int y = begin.getY(); y <= end.getY(); y++) {
+        for (int x = begin.x(); x <= end.x(); x++) {
+            for (int y = begin.y(); y <= end.y(); y++) {
                 if (isNotShotted(x, y)) {
                     return false;
                 }
@@ -92,7 +96,7 @@ public class Grid {
     }
 
     public boolean hasShip(Coordinates coordinates) {
-        return hasShip(coordinates.getX(), coordinates.getY());
+        return hasShip(coordinates.x(), coordinates.y());
     }
 
     public boolean hasShip(int x, int y) {
@@ -108,7 +112,7 @@ public class Grid {
     }
 
     public boolean hasShipNearby(Coordinates coordinates) {
-        return hasShipNearby(coordinates.getX(), coordinates.getY());
+        return hasShipNearby(coordinates.x(), coordinates.y());
     }
 
     public boolean hasShipNearby(int cx, int cy) {
@@ -137,10 +141,11 @@ public class Grid {
                 if (isDestroyed(ship)) {
                     Coordinates begin = ship.getBegin(), end = ship.getEnd();
 
-                    for (int cx = Math.max(begin.getX() - 1, 0); cx <= Math.min(end.getX() + 1, Grid.MAX_X); cx++) {
-                        for (int cy = Math.max(begin.getY() - 1, 0); cy <= Math.min(end.getY() + 1, Grid.MAX_Y); cy++) {
+                    for (int cx = Math.max(begin.x() - 1, 0); cx <= Math.min(end.x() + 1, Grid.MAX_X); cx++) {
+                        for (int cy = Math.max(begin.y() - 1, 0); cy <= Math.min(end.y() + 1, Grid.MAX_Y); cy++) {
                             if (!hasShip(cx, cy) && isNotShotted(cx, cy)) {
                                 gridPane.add(App.getMissedShotImageView(), cx, cy);
+                                setShotted(cx, cy);
                             }
                         }
                     }

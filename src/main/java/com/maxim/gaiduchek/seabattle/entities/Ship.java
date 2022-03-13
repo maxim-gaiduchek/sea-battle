@@ -18,14 +18,14 @@ public class Ship {
     }
 
     public int getLength() {
-        return Math.abs(begin.getX() == end.getX() ? begin.getY() - end.getY() : begin.getX() - end.getX()) + 1;
+        return Math.abs(begin.x() == end.x() ? begin.y() - end.y() : begin.x() - end.x()) + 1;
     }
 
     public boolean isOnShip(Coordinates c) {
-        if (begin.getX() == c.getX()) {
-            return begin.getY() <= c.getY() && c.getY() <= end.getY() || end.getY() <= c.getY() && c.getY() <= begin.getY();
+        if (begin.x() == c.x()) {
+            return begin.y() <= c.y() && c.y() <= end.y() || end.y() <= c.y() && c.y() <= begin.y();
         } else {
-            return begin.getX() <= c.getX() && c.getX() <= end.getX() || end.getX() <= c.getX() && c.getX() <= begin.getX();
+            return begin.x() <= c.x() && c.x() <= end.x() || end.x() <= c.x() && c.x() <= begin.x();
         }
     }
 
