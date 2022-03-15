@@ -20,7 +20,7 @@ public class Ship {
         return end;
     }
 
-    private int getLength() {
+    public int getLength() {
         return Math.abs(begin.x() == end.x() ? begin.y() - end.y() : begin.x() - end.x()) + 1;
     }
 

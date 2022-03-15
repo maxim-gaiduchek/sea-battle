@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class Grid {
 
+    public static final int MAX_SHIP_LENGTH = 5;
     public static final int MAX_X = 10, MAX_Y = 10;
 
     private final Ship[][] grid = new Ship[MAX_Y + 1][MAX_X + 1];
@@ -19,8 +20,8 @@ public class Grid {
 
         Random random = new Random();
 
-        for (int length = 5; length >= 1; length--) {
-            for (int i = 5 - length + 1; i > 0; i--) {
+        for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
+            for (int i = MAX_SHIP_LENGTH - length + 1; i > 0; i--) {
                 Coordinates begin, end;
 
                 while (true) {

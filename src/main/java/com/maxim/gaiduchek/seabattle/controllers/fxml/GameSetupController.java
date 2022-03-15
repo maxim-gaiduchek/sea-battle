@@ -14,6 +14,7 @@ public class GameSetupController {
     private GridPane gridPane;
 
     public void initialize() {
+        Game.reset();
         Game.generatePlayerGrid();
         updateGrid();
     }
