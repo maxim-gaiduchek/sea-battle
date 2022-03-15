@@ -2,8 +2,9 @@ package com.maxim.gaiduchek.seabattle.controllers;
 
 import com.maxim.gaiduchek.seabattle.entities.Coordinates;
 import com.maxim.gaiduchek.seabattle.entities.Grid;
-import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
@@ -66,7 +67,7 @@ public class Game {
 
             if (playerGrid.shot(playerGridPane, x, y)) {
                 if (playerGrid.isDefeated()) {
-                    App.openEndGameAlert("Ви програли \uD83D\uDE14");
+                    Platform.runLater(() -> App.openEndGameAlert("Ви програли \uD83D\uDE14"));
                 } else {
                     if (!playerGrid.isDestroyed(x, y)) {
                         if (playerFirstShipPart != null) {
