@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Game {
@@ -61,11 +60,11 @@ public class Game {
     }
 
     public static void playerShot(int x, int y) {
-        if (isPlayerMoving) {
+        if (isPlayerMoving && botGrid.isNotShotted(x, y)) {
             isPlayerMoving = botGrid.shot(botGridPane, x, y);
 
             if (botGrid.isDefeated()) {
-                App.openEndGameAlert("ВИ ВИЙГРАЛИ!!!");
+                Platform.runLater(() -> App.openEndGameAlert("ВИ ВИЙГРАЛИ!!!"));
             } else if (!isPlayerMoving) {
                 botShot();
             }
@@ -86,17 +85,19 @@ public class Game {
             } else {
                 Random random = new Random();
 
-                for (int len : Arrays.asList(4, 5, 3, 2, 1)) { // 4 in the beginning because there is more chance to shot on 4, then on 5
-                    if (playerShipsCount[len - 1] > 0) {
+                for (int i = playerShipsCount.length - 1; i >= 0; i--) {
+                    if (playerShipsCount[i] > 0) {
+                        int len = i + 1;
+
                         do { // TODO search len-th ships in coordinates, if there is a place for this ship
                             if (random.nextBoolean()) {
-                                x = (random.nextInt(Grid.MAX_X / len + (len == 1 ? 1 : 0)) + 1) * len - 1;
+                                x = (random.nextInt(Grid.MAX_X / len + (i == 0 ? 1 : 0)) + 1) * len - 1;
                                 y = random.nextInt(Grid.MAX_Y + 1);
                             } else {
                                 x = random.nextInt(Grid.MAX_X + 1);
-                                y = (random.nextInt(Grid.MAX_Y / len + (len == 1 ? 1 : 0)) + 1) * len - 1;
+                                y = (random.nextInt(Grid.MAX_Y / len + (i == 0 ? 1 : 0)) + 1) * len - 1;
                             }
-                        } while ((len != 1 && gcd(x + 1, y + 1) % len == 0) || !playerGrid.isNotShotted(x, y));
+                        } while ((i != 0 && gcd(x + 1, y + 1) % len == 0) || !playerGrid.isNotShotted(x, y));
 
                         break;
                     }
