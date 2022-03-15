@@ -1,6 +1,8 @@
 package com.maxim.gaiduchek.seabattle.controllers;
 
 import com.maxim.gaiduchek.seabattle.Main;
+import com.maxim.gaiduchek.seabattle.entities.Coordinates;
+import com.maxim.gaiduchek.seabattle.entities.Ship;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -52,12 +54,24 @@ public class App extends Application {
         return new Image(Objects.requireNonNull(Main.class.getResourceAsStream("images/icon.png")));
     }
 
-    public static ImageView getShipPartImageView() {
-        return getGridCellImageView("ship-part");
+    public static ImageView getHitShotImageView() {
+        return getGridCellImageView("hit-shot");
     }
 
     public static ImageView getMissedShotImageView() {
         return getGridCellImageView("missed-shot");
+    }
+
+    public static ImageView getCornerShipImageView() {
+        return getGridCellImageView("corner-ship-part");
+    }
+
+    public static ImageView getMiddleShipImageView() {
+        return getGridCellImageView("middle-ship-part");
+    }
+
+    public static ImageView getUnaryShipImageView() {
+        return getGridCellImageView("unary-ship-part");
     }
 
     private static ImageView getGridCellImageView(String name) {

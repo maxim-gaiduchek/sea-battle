@@ -69,7 +69,7 @@ public class Grid {
         return getShip(coordinates.x(), coordinates.y());
     }
 
-    private Ship getShip(int x, int y) {
+    public Ship getShip(int x, int y) {
         return grid[y][x];
     }
 
@@ -134,8 +134,6 @@ public class Grid {
             setShotted(x, y);
 
             if (hasShip(x, y)) {
-                gridPane.add(App.getShipPartImageView(), x, y);
-
                 Ship ship = getShip(x, y);
 
                 if (isDestroyed(ship)) {
@@ -143,13 +141,18 @@ public class Grid {
 
                     for (int cx = Math.max(begin.x() - 1, 0); cx <= Math.min(end.x() + 1, Grid.MAX_X); cx++) {
                         for (int cy = Math.max(begin.y() - 1, 0); cy <= Math.min(end.y() + 1, Grid.MAX_Y); cy++) {
-                            if (!hasShip(cx, cy) && isNotShotted(cx, cy)) {
+                            if (hasShip(cx, cy)) {
+                                gridPane.add(ship.getShipPart(cx, cy), cx, cy);
+                                gridPane.add(App.getHitShotImageView(), cx, cy);
+                            } else if (isNotShotted(cx, cy)) {
                                 gridPane.add(App.getMissedShotImageView(), cx, cy);
-                                setShotted(cx, cy);
                             }
+                            setShotted(cx, cy);
                         }
                     }
                 }
+
+                gridPane.add(App.getHitShotImageView(), x, y);
 
                 return true;
             } else {

@@ -27,7 +27,7 @@ public class GameSetupController {
         for (int x = 0; x <= Grid.MAX_X; x++) {
             for (int y = 0; y <= Grid.MAX_Y; y++) {
                 if (Game.playerGrid.hasShip(x, y)) {
-                    gridPane.add(App.getShipPartImageView(), x, y);
+                    gridPane.add(Game.playerGrid.getShip(x, y).getShipPart(x, y), x, y);
                 } else if (Game.playerGrid.hasShipNearby(x, y)) {
                     gridPane.add(App.getMissedShotImageView(), x, y);
                 }

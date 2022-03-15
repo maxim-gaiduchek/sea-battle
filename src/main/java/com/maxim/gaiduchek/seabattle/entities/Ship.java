@@ -1,5 +1,8 @@
 package com.maxim.gaiduchek.seabattle.entities;
 
+import com.maxim.gaiduchek.seabattle.controllers.App;
+import javafx.scene.image.ImageView;
+
 public class Ship {
 
     private final Coordinates begin, end;
@@ -17,15 +20,26 @@ public class Ship {
         return end;
     }
 
-    public int getLength() {
+    private int getLength() {
         return Math.abs(begin.x() == end.x() ? begin.y() - end.y() : begin.x() - end.x()) + 1;
     }
 
-    public boolean isOnShip(Coordinates c) {
-        if (begin.x() == c.x()) {
-            return begin.y() <= c.y() && c.y() <= end.y() || end.y() <= c.y() && c.y() <= begin.y();
+    public ImageView getShipPart(int x, int y) {
+        Coordinates cell = new Coordinates(x, y);
+
+        if (getLength() == 1) {
+            return App.getUnaryShipImageView();
+        } else if (begin.equals(cell) || end.equals(cell)) {
+            ImageView imageView = App.getCornerShipImageView();
+            int rotate = begin.x() == end.x() ?
+                    (begin.y() < end.y() ? 90 : -90) * (end.equals(cell) ? -1 : 1) :
+                    (begin.x() < end.x() ? 0 : 180) - (end.equals(cell) ? 180 : 0);
+
+            imageView.setRotate(rotate);
+
+            return imageView;
         } else {
-            return begin.x() <= c.x() && c.x() <= end.x() || end.x() <= c.x() && c.x() <= begin.x();
+            return App.getMiddleShipImageView();
         }
     }
 

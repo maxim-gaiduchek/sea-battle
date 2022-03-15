@@ -42,7 +42,7 @@ public class Coordinates {
         return "Coordinate{" +
                 "x=" + x +
                 ", y=" + y +
-                " (" + (x + 1) + "-" + ((char) ('a' + y)) + ")" +
+                " (" + ((char) ('a' + y)) + "-" + (x + 1) + ")" +
                 '}';
     }
 }
