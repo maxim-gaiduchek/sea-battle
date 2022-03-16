@@ -13,6 +13,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -113,6 +114,23 @@ public class App extends Application {
         }
     }
 
+    private static void openCloseApplicationAlert() {
+        ButtonType no = new ButtonType("Ні", ButtonBar.ButtonData.OK_DONE);
+        ButtonType yes = new ButtonType("Так", ButtonBar.ButtonData.CANCEL_CLOSE);
+        String prompt = "Ви дійсно хочете вийти з гри?";
+        Alert alert = new Alert(Alert.AlertType.NONE, prompt, no, yes);
+
+        alert.setTitle("SeaBattle");
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(getAppIcon());
+        alert.showAndWait();
+
+        if (alert.getResult().equals(no)) {
+            alert.close();
+        } else if (alert.getResult().equals(yes)) {
+            Platform.exit();
+        }
+    }
+
     // animations
 
     public static void playAppearingAnimation(Node node) {
@@ -129,7 +147,6 @@ public class App extends Application {
     public static void playRotateAnimation(Node node) {
         RotateTransition rotate = new RotateTransition(Duration.millis(200), node);
 
-        rotate.setFromAngle(node.getRotate());
         rotate.setToAngle(node.getRotate() + 90);
 
         rotate.play();
@@ -145,7 +162,10 @@ public class App extends Application {
         stage.getIcons().add(getAppIcon());
         stage.setResizable(false);
 
-        stage.setOnCloseRequest(windowEvent -> System.out.println("Closing"));
+        stage.setOnCloseRequest(windowEvent -> {
+            openCloseApplicationAlert();
+            windowEvent.consume();
+        });
 
         openMainMenuView();
 
