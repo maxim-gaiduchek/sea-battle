@@ -1,6 +1,7 @@
 package com.maxim.gaiduchek.seabattle.entities;
 
 import com.maxim.gaiduchek.seabattle.controllers.App;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.util.Arrays;
@@ -153,11 +154,17 @@ public class Grid {
                     }
                 }
 
-                gridPane.add(App.getHitShotImageView(), x, y);
+                ImageView hitShot = App.getHitShotImageView();
+
+                gridPane.add(hitShot, x, y);
+                App.playAppearingAnimation(hitShot);
 
                 return true;
             } else {
-                gridPane.add(App.getMissedShotImageView(), x, y);
+                ImageView missedShot = App.getMissedShotImageView();
+
+                gridPane.add(missedShot, x, y);
+                App.playAppearingAnimation(missedShot);
 
                 return false;
             }

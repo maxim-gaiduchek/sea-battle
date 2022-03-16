@@ -3,11 +3,14 @@ package com.maxim.gaiduchek.seabattle.controllers;
 import com.maxim.gaiduchek.seabattle.Main;
 import com.maxim.gaiduchek.seabattle.entities.Coordinates;
 import com.maxim.gaiduchek.seabattle.entities.Ship;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -15,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -107,6 +111,28 @@ public class App extends Application {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    // animations
+
+    public static void playAppearingAnimation(Node node) {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(200), node);
+
+        transition.setFromX(1.33);
+        transition.setFromY(1.33);
+        transition.setToX(1);
+        transition.setToY(1);
+
+        transition.play();
+    }
+
+    public static void playRotateAnimation(Node node) {
+        RotateTransition rotate = new RotateTransition(Duration.millis(200), node);
+
+        rotate.setFromAngle(node.getRotate());
+        rotate.setToAngle(node.getRotate() + 90);
+
+        rotate.play();
     }
 
     // main
