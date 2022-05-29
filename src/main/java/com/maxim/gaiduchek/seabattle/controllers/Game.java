@@ -11,14 +11,14 @@ import java.util.Random;
 
 public class Game {
 
-    public static Grid playerGrid, botGrid;
+    public static Grid playerGrid = new Grid(), botGrid;
     private static GridPane playerGridPane, botGridPane;
     private static boolean isPlayerMoving = true;
     private static Coordinates playerFirstShipPart, playerSecondShipPart;
     private static int[] playerShipsCount;
 
     public static void reset() {
-        playerGrid = null;
+        playerGrid = new Grid();
         botGrid = null;
 
         playerGridPane = null;
@@ -33,20 +33,18 @@ public class Game {
     }
 
     public static void generatePlayerGrid() {
-        playerGrid = new Grid();
+        playerGrid = Grid.generate();
         playerShipsCount = generateShipsCount();
     }
 
     public static void generateBotGrid() {
-        botGrid = new Grid();
+        botGrid = Grid.generate();
     }
 
     public static int[] generateShipsCount() {
         int[] shipsCount = new int[Grid.MAX_SHIP_LENGTH];
 
-        for (int length = Grid.MAX_SHIP_LENGTH; length >= 1; length--) {
-            shipsCount[length - 1] = Grid.MAX_SHIP_LENGTH - length + 1;
-        }
+        Grid.forEachShipLength(length -> shipsCount[length - 1] = Grid.MAX_SHIP_LENGTH - length + 1);
 
         return shipsCount;
     }

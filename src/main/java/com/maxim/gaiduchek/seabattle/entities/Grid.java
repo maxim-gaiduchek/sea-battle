@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class Grid {
 
@@ -16,63 +17,95 @@ public class Grid {
     private final boolean[][] shots = new boolean[MAX_Y + 1][MAX_X + 1];
 
     public Grid() {
-        for (Ship[] row : grid) Arrays.fill(row, null);
-        for (boolean[] row : shots) Arrays.fill(row, false);
+    }
+
+    public static Grid generate() {
+        Grid grid = new Grid();
+
+        for (Ship[] row : grid.grid) Arrays.fill(row, null);
+        for (boolean[] row : grid.shots) Arrays.fill(row, false);
 
         Random random = new Random();
 
-        for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
-            for (int i = MAX_SHIP_LENGTH - length + 1; i > 0; i--) {
-                Coordinates begin, end;
+        forEachShip(length -> {
+            Coordinates begin, end;
 
-                while (true) {
-                    if (random.nextBoolean()) {
-                        int x = random.nextInt(MAX_X - length + 2), y = random.nextInt(MAX_Y + 1);
+            while (true) {
+                if (random.nextBoolean()) {
+                    int x = random.nextInt(MAX_X - length + 2), y = random.nextInt(MAX_Y + 1);
 
-                        begin = new Coordinates(x, y);
-                        end = new Coordinates(x + length - 1, y);
-                    } else {
-                        int x = random.nextInt(MAX_X + 1), y = random.nextInt(MAX_Y - length + 2);
+                    begin = new Coordinates(x, y);
+                    end = new Coordinates(x + length - 1, y);
+                } else {
+                    int x = random.nextInt(MAX_X + 1), y = random.nextInt(MAX_Y - length + 2);
 
-                        begin = new Coordinates(x, y);
-                        end = new Coordinates(x, y + length - 1);
-                    }
+                    begin = new Coordinates(x, y);
+                    end = new Coordinates(x, y + length - 1);
+                }
 
-                    boolean toBreak = true;
+                boolean toBreak = true;
 
-                    for (int x = begin.x(); x <= end.x() && toBreak; x++) {
-                        for (int y = begin.y(); y <= end.y() && toBreak; y++) {
-                            if (hasShipNearby(x, y)) {
-                                toBreak = false;
-                            }
+                for (int x = begin.x(); x <= end.x() && toBreak; x++) {
+                    for (int y = begin.y(); y <= end.y() && toBreak; y++) {
+                        if (grid.hasShipNearby(x, y)) {
+                            toBreak = false;
                         }
                     }
-
-                    if (toBreak) break;
                 }
 
-                Ship ship = new Ship(begin, end);
+                if (toBreak) break;
+            }
 
-                for (int x = begin.x(); x <= end.x(); x++) {
-                    for (int y = begin.y(); y <= end.y(); y++) {
-                        setShip(ship, x, y);
-                    }
+            Ship ship = new Ship(begin, end);
+
+            for (int x = begin.x(); x <= end.x(); x++) {
+                for (int y = begin.y(); y <= end.y(); y++) {
+                    grid.setShip(ship, x, y);
                 }
             }
-        }
+        });
 
         System.out.println("Randomly generated grid:");
-        outputGrid();
+        grid.outputGrid();
+
+        return grid;
     }
 
     // getters
 
-    private Ship getShip(Coordinates coordinates) {
-        return getShip(coordinates.x(), coordinates.y());
-    }
-
     public Ship getShip(int x, int y) {
         return grid[y][x];
+    }
+
+    // setters
+
+    public void setShip(Ship ship, int x, int y) {
+        grid[y][x] = ship;
+    }
+
+    public void removeShip(int cx, int cy) {
+        Ship ship = getShip(cx, cy);
+        Coordinates begin = ship.getBegin(), end = ship.getEnd();
+
+        for (int x = begin.x(); x <= end.x(); x++) {
+            for (int y = begin.y(); y <= end.y(); y++) {
+                setShip(null, x, y);
+            }
+        }
+    }
+
+    private void setShotted(int x, int y) {
+        shots[y][x] = true;
+    }
+
+    // booleans
+
+    public boolean isFullyCompleted() {
+        return false;
+    }
+
+    public boolean hasShip(int x, int y) {
+        return getShip(x, y) != null;
     }
 
     public boolean isNotShotted(int x, int y) {
@@ -97,26 +130,6 @@ public class Grid {
         return true;
     }
 
-    public boolean hasShip(Coordinates coordinates) {
-        return hasShip(coordinates.x(), coordinates.y());
-    }
-
-    public boolean hasShip(int x, int y) {
-        return getShip(x, y) != null;
-    }
-
-    private void setShip(Ship ship, int x, int y) {
-        grid[y][x] = ship;
-    }
-
-    private void setShotted(int x, int y) {
-        shots[y][x] = true;
-    }
-
-    public boolean hasShipNearby(Coordinates coordinates) {
-        return hasShipNearby(coordinates.x(), coordinates.y());
-    }
-
     public boolean hasShipNearby(int cx, int cy) {
         for (int x = Math.max(cx - 1, 0); x <= Math.min(cx + 1, MAX_X); x++) {
             for (int y = Math.max(cy - 1, 0); y <= Math.min(cy + 1, MAX_Y); y++) {
@@ -127,6 +140,18 @@ public class Grid {
         }
 
         return false;
+    }
+
+    public boolean isDefeated() {
+        for (int x = 0; x <= MAX_X; x++) {
+            for (int y = 0; y <= MAX_Y; y++) {
+                if (hasShip(x, y) && isNotShotted(x, y)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     // other
@@ -173,18 +198,6 @@ public class Grid {
         return false;
     }
 
-    public boolean isDefeated() {
-        for (int x = 0; x <= MAX_X; x++) {
-            for (int y = 0; y <= MAX_Y; y++) {
-                if (hasShip(x, y) && isNotShotted(x, y)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
     private void outputGrid() {
         for (Ship[] row : grid) {
             for (Ship ship : row) {
@@ -197,5 +210,21 @@ public class Grid {
 
     public enum Shot {
         NONE, MISSED, HIT
+    }
+
+    // for each
+
+    public static void forEachShip(Consumer<Integer> function) {
+        forEachShipLength(length -> {
+            for (int i = MAX_SHIP_LENGTH - length + 1; i > 0; i--) {
+                function.accept(length);
+            }
+        });
+    }
+
+    public static void forEachShipLength(Consumer<Integer> function) {
+        for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
+            function.accept(length);
+        }
     }
 }

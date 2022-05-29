@@ -21,7 +21,7 @@ public class Ship {
     }
 
     public int getLength() {
-        return Math.abs(begin.x() == end.x() ? begin.y() - end.y() : begin.x() - end.x()) + 1;
+        return Math.abs(isHorizontally() ? begin.x() - end.x() : begin.y() - end.y()) + 1;
     }
 
     public ImageView getShipPart(int x, int y) {
@@ -31,9 +31,9 @@ public class Ship {
             return App.getUnaryShipImageView();
         } else if (begin.equals(cell) || end.equals(cell)) {
             ImageView imageView = App.getCornerShipImageView();
-            int rotate = begin.x() == end.x() ?
-                    (begin.y() < end.y() ? 90 : -90) * (end.equals(cell) ? -1 : 1) :
-                    (begin.x() < end.x() ? 0 : 180) - (end.equals(cell) ? 180 : 0);
+            int rotate = isHorizontally() ?
+                    (begin.x() < end.x() ? 0 : 180) - (end.equals(cell) ? 180 : 0) :
+                    (begin.y() < end.y() ? 90 : -90) * (end.equals(cell) ? -1 : 1);
 
             imageView.setRotate(rotate);
 
@@ -41,6 +41,10 @@ public class Ship {
         } else {
             return App.getMiddleShipImageView();
         }
+    }
+
+    private boolean isHorizontally() {
+        return begin.y() == end.y();
     }
 
     // core

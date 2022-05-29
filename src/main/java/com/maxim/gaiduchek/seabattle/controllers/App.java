@@ -1,8 +1,6 @@
 package com.maxim.gaiduchek.seabattle.controllers;
 
 import com.maxim.gaiduchek.seabattle.Main;
-import com.maxim.gaiduchek.seabattle.entities.Coordinates;
-import com.maxim.gaiduchek.seabattle.entities.Ship;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
@@ -28,7 +26,7 @@ import java.util.Objects;
 
 public class App extends Application {
 
-    private static Stage stage;
+    public static Stage stage;
 
     // view controller
 
