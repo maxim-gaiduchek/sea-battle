@@ -3,6 +3,12 @@ package com.maxim.gaiduchek.seabattle.entities;
 import com.maxim.gaiduchek.seabattle.controllers.App;
 import javafx.scene.image.ImageView;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.util.function.BiConsumer;
+
 public class Ship {
 
     private final Coordinates begin, end;
@@ -18,6 +24,22 @@ public class Ship {
 
     public Coordinates getEnd() {
         return end;
+    }
+
+    public int getBeginX() {
+        return begin.x();
+    }
+
+    public int getBeginY() {
+        return begin.y();
+    }
+
+    public int getEndX() {
+        return end.x();
+    }
+
+    public int getEndY() {
+        return end.y();
     }
 
     public int getLength() {
@@ -43,8 +65,18 @@ public class Ship {
         }
     }
 
-    private boolean isHorizontally() {
+    public boolean isHorizontally() {
         return begin.y() == end.y();
+    }
+
+    // functions
+
+    public void forEachCoordinate(BiConsumer<Integer, Integer> function) {
+        for (int x = getBeginX(); x <= getEndX(); x++) {
+            for (int y = getBeginY(); y <= getEndY(); y++) {
+                function.accept(x, y);
+            }
+        }
     }
 
     // core
@@ -63,7 +95,7 @@ public class Ship {
     @Override
     public int hashCode() {
         int result = begin.hashCode();
-        result = 31 * result + end.hashCode();
+        result = 1000 * result + end.hashCode();
         return result;
     }
 

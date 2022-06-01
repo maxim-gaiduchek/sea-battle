@@ -7,15 +7,23 @@ import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
+import java.io.*;
 import java.util.Random;
 
 public class Game {
+
+    private static final String FILENAME = "game.dat";
 
     public static Grid playerGrid = new Grid(), botGrid;
     private static GridPane playerGridPane, botGridPane;
     private static boolean isPlayerMoving = true;
     private static Coordinates playerFirstShipPart, playerSecondShipPart;
-    private static int[] playerShipsCount;
+    private static int[] playerShipsCount = generateShipsCount();
+
+    private Game() {
+    }
+
+    // creating
 
     public static void reset() {
         playerGrid = new Grid();
@@ -28,8 +36,6 @@ public class Game {
 
         playerFirstShipPart = null;
         playerSecondShipPart = null;
-
-        playerShipsCount = null;
     }
 
     public static void generatePlayerGrid() {
@@ -49,6 +55,47 @@ public class Game {
         return shipsCount;
     }
 
+    public static void saveGame() throws IOException {
+        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(FILENAME));
+
+        if (botGrid != null) {
+            out.writeBoolean(true);
+            out.writeObject(playerGrid);
+            out.writeObject(botGrid);
+            out.writeBoolean(isPlayerMoving);
+        } else {
+            out.writeBoolean(false);
+        }
+
+        out.close();
+    }
+
+    public static boolean loadGame() throws IOException, ClassNotFoundException {
+        File file = new File(FILENAME);
+
+        if (!file.exists()) {
+            return false;
+        }
+
+        ObjectInput in = new ObjectInputStream(new FileInputStream(file));
+
+        if (!in.readBoolean()) {
+            return false;
+        }
+
+        playerGrid = (Grid) in.readObject();
+        botGrid = (Grid) in.readObject();
+        isPlayerMoving = in.readBoolean();
+
+        in.close();
+        file.delete();
+
+        return true;
+
+    }
+
+    // game
+
     public static void setPlayerGridPane(GridPane playerGridPane) {
         Game.playerGridPane = playerGridPane;
     }
@@ -58,7 +105,7 @@ public class Game {
     }
 
     public static void playerShot(int x, int y) {
-        if (isPlayerMoving && botGrid.isNotShotted(x, y)) {
+        if (isPlayerMoving && !botGrid.isShotted(x, y)) {
             isPlayerMoving = botGrid.shot(botGridPane, x, y);
 
             if (botGrid.isDefeated()) {
@@ -95,7 +142,7 @@ public class Game {
                                 x = random.nextInt(Grid.MAX_X + 1);
                                 y = (random.nextInt(Grid.MAX_Y / len + (i == 0 ? 1 : 0)) + 1) * len - 1;
                             }
-                        } while ((i != 0 && gcd(x + 1, y + 1) % len == 0) || !playerGrid.isNotShotted(x, y));
+                        } while ((i != 0 && gcd(x + 1, y + 1) % len == 0) || playerGrid.isShotted(x, y));
 
                         break;
                     }
@@ -104,7 +151,7 @@ public class Game {
 
             if (playerGrid.shot(playerGridPane, x, y)) {
                 if (playerGrid.isDefeated()) {
-                    Platform.runLater(() -> App.openEndGameAlert("Ви програли \uD83D\uDE14"));
+                    Platform.runLater(() -> App.openEndGameAlert("Ви програли :("));
                 } else {
                     if (playerGrid.isDestroyed(x, y)) {
                         playerFirstShipPart = null;
@@ -129,6 +176,8 @@ public class Game {
         pause.play();
     }
 
+    // utils
+
     private static Coordinates getNextDetectedShipShot() {
         int x, y;
 
@@ -146,20 +195,20 @@ public class Game {
                 y = playerSecondShipPart.y() + Integer.compare(playerSecondShipPart.y(), playerFirstShipPart.y());
             }
 
-            if (!playerGrid.isNotShotted(x, y)) {
+            if (playerGrid.isShotted(x, y)) {
                 x = playerFirstShipPart.x() - Integer.compare(playerSecondShipPart.x(), playerFirstShipPart.x());
                 y = playerFirstShipPart.y() - Integer.compare(playerSecondShipPart.y(), playerFirstShipPart.y());
             }
         } else {
             int shipX = playerFirstShipPart.x(), shipY = playerFirstShipPart.y();
 
-            if (shipX > 0 && playerGrid.isNotShotted(shipX - 1, shipY)) {
+            if (shipX > 0 && !playerGrid.isShotted(shipX - 1, shipY)) {
                 x = shipX - 1;
                 y = shipY;
-            } else if (shipX < Grid.MAX_X && playerGrid.isNotShotted(shipX + 1, shipY)) {
+            } else if (shipX < Grid.MAX_X && !playerGrid.isShotted(shipX + 1, shipY)) {
                 x = shipX + 1;
                 y = shipY;
-            } else if (shipY > 0 && playerGrid.isNotShotted(shipX, shipY - 1)) {
+            } else if (shipY > 0 && !playerGrid.isShotted(shipX, shipY - 1)) {
                 x = shipX;
                 y = shipY - 1;
             } else { // if (shipX < Grid.MAX_Y)

@@ -119,12 +119,17 @@ public class App extends Application {
         Alert alert = new Alert(Alert.AlertType.NONE, prompt, no, yes);
 
         alert.setTitle("SeaBattle");
+        //alert.setOnCloseRequest(dialogEvent -> alert.setResult(no));
         ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(getAppIcon());
         alert.showAndWait();
 
-        if (alert.getResult().equals(no)) {
-            alert.close();
-        } else if (alert.getResult().equals(yes)) {
+        if (alert.getResult().equals(yes)) {
+            try {
+                Game.saveGame();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             Platform.exit();
         }
     }

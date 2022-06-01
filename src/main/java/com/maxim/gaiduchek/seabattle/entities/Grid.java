@@ -4,27 +4,31 @@ import com.maxim.gaiduchek.seabattle.controllers.App;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.util.Arrays;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class Grid {
+public class Grid implements Externalizable {
+
+    private static final long serialVersionUID = 7763048505717776650L;
 
     public static final int MAX_SHIP_LENGTH = 5;
     public static final int MAX_X = 10, MAX_Y = 10;
 
-    private final Ship[][] grid = new Ship[MAX_Y + 1][MAX_X + 1];
-    private final boolean[][] shots = new boolean[MAX_Y + 1][MAX_X + 1];
+    private final Cell[][] cells = new Cell[MAX_Y + 1][MAX_X + 1];
 
     public Grid() {
+        forEachCoordinate((x, y) -> cells[y][x] = new Cell());
     }
 
     public static Grid generate() {
         Grid grid = new Grid();
-
-        for (Ship[] row : grid.grid) Arrays.fill(row, null);
-        for (boolean[] row : grid.shots) Arrays.fill(row, false);
-
         Random random = new Random();
 
         forEachShip(length -> {
@@ -56,13 +60,7 @@ public class Grid {
                 if (toBreak) break;
             }
 
-            Ship ship = new Ship(begin, end);
-
-            for (int x = begin.x(); x <= end.x(); x++) {
-                for (int y = begin.y(); y <= end.y(); y++) {
-                    grid.setShip(ship, x, y);
-                }
-            }
+            grid.addShip(new Ship(begin, end));
         });
 
         System.out.println("Randomly generated grid:");
@@ -73,29 +71,12 @@ public class Grid {
 
     // getters
 
+    private Cell getCell(int x, int y) {
+        return cells[y][x];
+    }
+
     public Ship getShip(int x, int y) {
-        return grid[y][x];
-    }
-
-    // setters
-
-    public void setShip(Ship ship, int x, int y) {
-        grid[y][x] = ship;
-    }
-
-    public void removeShip(int cx, int cy) {
-        Ship ship = getShip(cx, cy);
-        Coordinates begin = ship.getBegin(), end = ship.getEnd();
-
-        for (int x = begin.x(); x <= end.x(); x++) {
-            for (int y = begin.y(); y <= end.y(); y++) {
-                setShip(null, x, y);
-            }
-        }
-    }
-
-    private void setShotted(int x, int y) {
-        shots[y][x] = true;
+        return getCell(x, y).getShip();
     }
 
     // booleans
@@ -108,8 +89,8 @@ public class Grid {
         return getShip(x, y) != null;
     }
 
-    public boolean isNotShotted(int x, int y) {
-        return !shots[y][x];
+    public boolean isShotted(int x, int y) {
+        return getCell(x, y).isShotted();
     }
 
     public boolean isDestroyed(int x, int y) {
@@ -117,11 +98,9 @@ public class Grid {
     }
 
     private boolean isDestroyed(Ship ship) {
-        Coordinates begin = ship.getBegin(), end = ship.getEnd();
-
-        for (int x = begin.x(); x <= end.x(); x++) {
-            for (int y = begin.y(); y <= end.y(); y++) {
-                if (isNotShotted(x, y)) {
+        for (int x = ship.getBeginX(); x <= ship.getEndX(); x++) {
+            for (int y = ship.getBeginY(); y <= ship.getEndY(); y++) {
+                if (!isShotted(x, y)) {
                     return false;
                 }
             }
@@ -145,7 +124,7 @@ public class Grid {
     public boolean isDefeated() {
         for (int x = 0; x <= MAX_X; x++) {
             for (int y = 0; y <= MAX_Y; y++) {
-                if (hasShip(x, y) && isNotShotted(x, y)) {
+                if (hasShip(x, y) && !isShotted(x, y)) {
                     return false;
                 }
             }
@@ -154,10 +133,28 @@ public class Grid {
         return true;
     }
 
+    // setters
+
+    private void addShip(Ship ship) {
+        ship.forEachCoordinate((x, y) -> setShipToCell(ship, x, y));
+    }
+
+    private void setShipToCell(Ship ship, int x, int y) {
+        getCell(x, y).setShip(ship);
+    } // TODO remove if will be useless later
+
+    private void setShotted(int x, int y) {
+        getCell(x, y).setShotted();
+    }
+
+    public void removeShip(int x, int y) {
+        getCell(x, y).setShip(null);
+    }
+
     // other
 
     public boolean shot(GridPane gridPane, int x, int y) {
-        if (isNotShotted(x, y)) {
+        if (!isShotted(x, y)) {
             setShotted(x, y);
 
             if (hasShip(x, y)) {
@@ -171,7 +168,7 @@ public class Grid {
                             if (hasShip(cx, cy)) {
                                 gridPane.add(ship.getShipPart(cx, cy), cx, cy);
                                 gridPane.add(App.getHitShotImageView(), cx, cy);
-                            } else if (isNotShotted(cx, cy)) {
+                            } else if (!isShotted(cx, cy)) {
                                 gridPane.add(App.getMissedShotImageView(), cx, cy);
                             }
                             setShotted(cx, cy);
@@ -199,24 +196,65 @@ public class Grid {
     }
 
     private void outputGrid() {
-        for (Ship[] row : grid) {
-            for (Ship ship : row) {
-                System.out.print((ship == null ? "." : "0") + "\t");
+        for (int y = 0; y <= MAX_Y; y++) {
+            for (int x = 0; x <= MAX_X; x++) {
+                System.out.print((hasShip(x, y) ? "0" : ".") + "\t");
             }
             System.out.println();
         }
         System.out.println();
     }
 
-    public enum Shot {
-        NONE, MISSED, HIT
+    // externalize
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        Set<Ship> ships = new HashSet<>();
+
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                if (cell.hasShip()) {
+                    ships.add(cell.getShip());
+                }
+                out.writeBoolean(cell.isShotted());
+            }
+        }
+        for (Ship ship : ships) {
+            out.writeByte(ship.getBeginX());
+            out.writeByte(ship.getBeginY());
+            out.writeByte(ship.getEndX());
+            out.writeByte(ship.getEndY());
+        }
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) {
+        for (int y = 0; y <= MAX_Y; y++) {
+            for (int x = 0; x <= MAX_X; x++) {
+                try {
+                    cells[y][x] = new Cell(in.readBoolean());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        forEachShip(length -> {
+            try {
+                Coordinates begin = new Coordinates(in.readByte(), in.readByte());
+                Coordinates end = new Coordinates(in.readByte(), in.readByte());
+
+                addShip(new Ship(begin, end));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     // for each
 
     public static void forEachShip(Consumer<Integer> function) {
         forEachShipLength(length -> {
-            for (int i = MAX_SHIP_LENGTH - length + 1; i > 0; i--) {
+            for (int i = MAX_SHIP_LENGTH - length + 1; i >= 1; i--) {
                 function.accept(length);
             }
         });
@@ -225,6 +263,14 @@ public class Grid {
     public static void forEachShipLength(Consumer<Integer> function) {
         for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
             function.accept(length);
+        }
+    }
+
+    public static void forEachCoordinate(BiConsumer<Integer, Integer> function) {
+        for (int x = 0; x <= MAX_X; x++) {
+            for (int y = 0; y <= MAX_Y; y++) {
+                function.accept(x, y);
+            }
         }
     }
 }
