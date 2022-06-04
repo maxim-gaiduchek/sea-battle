@@ -147,8 +147,8 @@ public class Grid implements Externalizable {
         getCell(x, y).setShotted();
     }
 
-    public void removeShip(int x, int y) {
-        getCell(x, y).setShip(null);
+    public void removeShip(int cx, int cy) {
+        getCell(cx, cy).getShip().forEachCoordinate((x, y) -> getCell(x, y).setShip(null));
     }
 
     // other
@@ -261,7 +261,7 @@ public class Grid implements Externalizable {
     }
 
     public static void forEachShipLength(Consumer<Integer> function) {
-        for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
+        for (int length = 1; length <= MAX_SHIP_LENGTH; length++) {
             function.accept(length);
         }
     }
