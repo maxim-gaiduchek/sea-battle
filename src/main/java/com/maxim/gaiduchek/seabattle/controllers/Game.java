@@ -18,7 +18,6 @@ public class Game {
     private static GridPane playerGridPane, botGridPane;
     private static boolean isPlayerMoving = true;
     private static Coordinates playerFirstShipPart, playerSecondShipPart;
-    private static int[] playerShipsCount = generateShipsCount();
 
     private Game() {
     }
@@ -40,19 +39,10 @@ public class Game {
 
     public static void generatePlayerGrid() {
         playerGrid = Grid.generate();
-        playerShipsCount = generateShipsCount();
     }
 
     public static void generateBotGrid() {
         botGrid = Grid.generate();
-    }
-
-    public static int[] generateShipsCount() {
-        int[] shipsCount = new int[Grid.MAX_SHIP_LENGTH];
-
-        Grid.forEachShipLength(length -> shipsCount[length - 1] = Grid.MAX_SHIP_LENGTH - length + 1);
-
-        return shipsCount;
     }
 
     public static void saveGame() throws IOException {
@@ -130,8 +120,8 @@ public class Game {
             } else {
                 Random random = new Random();
 
-                for (int i = playerShipsCount.length - 1; i >= 0; i--) {
-                    if (playerShipsCount[i] > 0) {
+                for (int i = playerGrid.getShipsCountLength() - 1; i >= 0; i--) {
+                    if (playerGrid.getShipsCount(i + 1) > 0) {
                         int len = i + 1;
 
                         do { // TODO search len-th ships in coordinates, if there is a place for this ship
@@ -156,7 +146,7 @@ public class Game {
                     if (playerGrid.isDestroyed(x, y)) {
                         playerFirstShipPart = null;
                         playerSecondShipPart = null;
-                        playerShipsCount[playerGrid.getShip(x, y).getLength() - 1]--;
+                        playerGrid.decrementShipsCount(playerGrid.getShip(x, y).getLength());
                     } else {
                         if (playerFirstShipPart != null) {
                             playerSecondShipPart = new Coordinates(x, y);

@@ -293,18 +293,17 @@
                     <Font size="16.0"/>
                 </font>
             </Label>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0" text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                   prefHeight="20.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                   GridPane.valignment="CENTER">
-                <children>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/unary-ship-part.png"/>
-                    </ImageView>
-                </children>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/unary-ship-part.png"/>
+                </ImageView>
             </HBox>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.columnIndex="1" opacity="0.0" text="Button"
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.columnIndex="1"
                     GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
             <Label text="4/4" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1"
                    GridPane.valignment="CENTER">
@@ -312,110 +311,106 @@
                     <Font size="16.0"/>
                 </font>
             </Label>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="1" opacity="0.0"
-                    text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.halignment="CENTER"
+                    GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                   prefHeight="20.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                   GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                <children>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                </children>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
             </HBox>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="1" GridPane.columnIndex="1" opacity="0.0" text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.columnIndex="1"
+                    GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
             <Label text="3/3" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2"
                    GridPane.valignment="CENTER">
                 <font>
                     <Font size="16.0"/>
                 </font>
             </Label>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="2" opacity="0.0"
-                    text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.halignment="CENTER"
+                    GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                   prefHeight="20.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                   GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                <children>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/middle-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                </children>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/middle-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
             </HBox>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="2" GridPane.columnIndex="1" opacity="0.0" text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.columnIndex="1"
+                    GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
             <Label text="2/2" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3"
                    GridPane.valignment="CENTER">
                 <font>
                     <Font size="16.0"/>
                 </font>
             </Label>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="3" opacity="0.0"
-                    text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.halignment="CENTER"
+                    GridPane.rowIndex="3" GridPane.valignment="CENTER"/>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                   prefHeight="20.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                   GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                <children>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/middle-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/middle-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                </children>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/middle-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/middle-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
             </HBox>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="3" GridPane.columnIndex="1" opacity="0.0" text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.columnIndex="1"
+                    GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER"/>
             <Label text="1/1" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="4"
                    GridPane.valignment="CENTER">
                 <font>
                     <Font size="16.0"/>
                 </font>
             </Label>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="4" opacity="0.0"
-                    text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.halignment="CENTER"
+                    GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                   prefHeight="20.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                   GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                <children>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/middle-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/middle-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@images/middle-ship-part.png"/>
-                    </ImageView>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-                        <Image url="@images/corner-ship-part.png"/>
-                    </ImageView>
-                </children>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/middle-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/middle-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/middle-ship-part.png"/>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                    <Image url="@images/corner-ship-part.png"/>
+                </ImageView>
             </HBox>
-            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" GridPane.rowIndex="4" GridPane.columnIndex="1" opacity="0.0" text="Button"
-                    GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Button maxWidth="100.0" minHeight="50.0" mnemonicParsing="false" opacity="0.0"
+                    style="-fx-background-color: #56C2F5;" GridPane.columnIndex="1"
+                    GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
         </GridPane>
     </GridPane>
     <padding>

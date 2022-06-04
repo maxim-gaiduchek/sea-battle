@@ -22,9 +22,11 @@ public class Grid implements Externalizable {
     public static final int MAX_X = 10, MAX_Y = 10;
 
     private final Cell[][] cells = new Cell[MAX_Y + 1][MAX_X + 1];
+    private final int[] shipsCount = new int[Grid.MAX_SHIP_LENGTH];
 
     public Grid() {
         forEachCoordinate((x, y) -> cells[y][x] = new Cell());
+        forEachShipLength(length -> shipsCount[length - 1] = 0);
     }
 
     public static Grid generate() {
@@ -71,22 +73,52 @@ public class Grid implements Externalizable {
 
     // getters
 
+    private Cell getCell(Coordinates coordinates) {
+        return getCell(coordinates.x(), coordinates.y());
+    }
+
     private Cell getCell(int x, int y) {
         return cells[y][x];
+    }
+
+    public Ship getShip(Coordinates coordinates) {
+        return getShip(coordinates.x(), coordinates.y());
     }
 
     public Ship getShip(int x, int y) {
         return getCell(x, y).getShip();
     }
 
+    public int getShipsCount(int shipLength) {
+        return shipsCount[shipLength - 1];
+    }
+
+    public int getShipsCountLength() {
+        return shipsCount.length;
+    }
+
     // booleans
 
+    public boolean isLengthNotCompleted(int shipLength) {
+        return shipsCount[shipLength - 1] != MAX_SHIP_LENGTH - shipLength + 1;
+    }
+
     public boolean isFullyCompleted() {
-        return false;
+        for (int length = 1; length <= MAX_SHIP_LENGTH; length++) {
+            if (isLengthNotCompleted(length)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean hasShip(int x, int y) {
         return getShip(x, y) != null;
+    }
+
+    public boolean hasShip(Coordinates coordinates) {
+        return hasShip(coordinates.x(), coordinates.y());
     }
 
     public boolean isShotted(int x, int y) {
@@ -135,8 +167,16 @@ public class Grid implements Externalizable {
 
     // setters
 
-    private void addShip(Ship ship) {
+    public void addShip(Ship ship) {
         ship.forEachCoordinate((x, y) -> setShipToCell(ship, x, y));
+        shipsCount[ship.getLength() - 1]++;
+    }
+
+    public void removeShip(Coordinates coordinates) {
+        Ship ship = getCell(coordinates).getShip();
+
+        ship.forEachCoordinate((x, y) -> getCell(x, y).setShip(null));
+        shipsCount[ship.getLength() - 1]--;
     }
 
     private void setShipToCell(Ship ship, int x, int y) {
@@ -147,8 +187,8 @@ public class Grid implements Externalizable {
         getCell(x, y).setShotted();
     }
 
-    public void removeShip(int cx, int cy) {
-        getCell(cx, cy).getShip().forEachCoordinate((x, y) -> getCell(x, y).setShip(null));
+    public void decrementShipsCount(int shipLength) {
+        shipsCount[shipLength - 1]--;
     }
 
     // other
@@ -261,7 +301,7 @@ public class Grid implements Externalizable {
     }
 
     public static void forEachShipLength(Consumer<Integer> function) {
-        for (int length = 1; length <= MAX_SHIP_LENGTH; length++) {
+        for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
             function.accept(length);
         }
     }

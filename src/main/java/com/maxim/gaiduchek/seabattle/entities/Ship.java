@@ -65,6 +65,11 @@ public class Ship {
         }
     }
 
+    public boolean isOnShip(int x, int y) {
+        return begin.x() <= x && x <= end.x() &&
+                begin.y() <= y && y <= end.y();
+    }
+
     public boolean isHorizontally() {
         return begin.y() == end.y();
     }
