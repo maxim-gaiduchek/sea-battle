@@ -3,10 +3,6 @@ package com.maxim.gaiduchek.seabattle.entities;
 import com.maxim.gaiduchek.seabattle.controllers.App;
 import javafx.scene.image.ImageView;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.util.function.BiConsumer;
 
 public class Ship {

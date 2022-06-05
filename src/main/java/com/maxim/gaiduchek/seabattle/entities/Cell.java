@@ -9,17 +9,7 @@ public class Cell {
         shotted = false;
     }
 
-    public Cell(Ship ship) {
-        this.ship = ship;
-        shotted = false;
-    }
-
     public Cell(boolean shotted) {
-        this.shotted = shotted;
-    }
-
-    public Cell(Ship ship, boolean shotted) {
-        this.ship = ship;
         this.shotted = shotted;
     }
 
@@ -35,10 +25,6 @@ public class Cell {
 
     public boolean isShotted() {
         return shotted;
-    }
-
-    public boolean isFree() {
-        return !hasShip() && !shotted;
     }
 
     // setters

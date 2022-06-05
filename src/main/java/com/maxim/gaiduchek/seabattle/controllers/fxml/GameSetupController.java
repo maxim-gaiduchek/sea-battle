@@ -50,20 +50,14 @@ public class GameSetupController {
         showOnShipDropHints();
 
         for (Node node : shipsContainer.getChildren()) {
-            Integer col = GridPane.getColumnIndex(node);
+            int col = format(GridPane.getColumnIndex(node));
 
-            if (col == null) {
-                col = 0;
-            }
             if (col > 1) {
                 continue;
             }
 
-            Integer row = GridPane.getRowIndex(node);
+            int row = format(GridPane.getRowIndex(node));
 
-            if (row == null) {
-                row = 0;
-            }
             if (row > Grid.MAX_SHIP_LENGTH) {
                 continue;
             }
@@ -96,73 +90,85 @@ public class GameSetupController {
                 }
             }
         }
+    }
 
-        gridPane.setOnMouseMoved(mouseEvent -> {
-            if (selectedShipLength != -1) {
-                Ship ship = getSelectedShip();
+    private int format(Integer num) {
+        return num == null ? 0 : num;
+    }
+
+    // gridPane
+
+    @FXML
+    private void onGridPaneMouseMoved(MouseEvent mouseEvent) {
+        if (selectedShipLength != -1) {
+            Ship ship = getSelectedShip();
+            Coordinates coordinates = getGridPaneCoordinatesOfMouse(mouseEvent);
+
+            if (lastX != coordinates.x() || lastY != coordinates.y()) {
+                Ship newShip = getSelectedShip(coordinates.x(), coordinates.y());
+
+                if (canSelectedShipBePlaced(newShip)) {
+                    lastX = coordinates.x();
+                    lastY = coordinates.y();
+
+                    removeShipFromGridPane(ship);
+                    drawShipSilhouette(newShip);
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onGridPaneMouseExited() {
+        removeShipFromGridPane(getSelectedShip());
+        lastX = Grid.MAX_X + 1;
+        lastY = Grid.MAX_Y + 1;
+    }
+
+    @FXML
+    private void onGridPaneMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY && selectedShipLength != -1) {
+            Ship ship = getSelectedShip();
+
+            if (canSelectedShipBePlaced(ship)) {
+                removeShipFromGridPane(ship);
+                Game.playerGrid.addShip(ship);
+                updateGrid();
+                clearButton.setDisable(false);
+                decrementShipCount(selectedShipLength);
+
+                lastX = Grid.MAX_X + 1;
+                lastY = Grid.MAX_Y + 1;
+
+                if (Game.playerGrid.isFullyCompleted()) {
+                    startGameButton.setDisable(false);
+                }
+            }
+        } else if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+            if (selectedShipLength == -1) {
                 Coordinates coordinates = getGridPaneCoordinatesOfMouse(mouseEvent);
 
-                if (lastX != coordinates.x() || lastY != coordinates.y()) {
-                    Ship newShip = getSelectedShip(coordinates.x(), coordinates.y());
+                if (Game.playerGrid.hasShip(coordinates)) {
+                    Ship ship = Game.playerGrid.getShip(coordinates);
 
-                    if (canSelectedShipBePlaced(newShip)) {
-                        lastX = coordinates.x();
-                        lastY = coordinates.y();
-
-                        removeShipFromGridPane(ship);
-                        drawShipSilhouette(newShip);
-                    }
-                }
-            }
-        });
-        gridPane.setOnMouseExited(mouseEvent -> {
-            removeShipFromGridPane(getSelectedShip());
-            lastX = Grid.MAX_X + 1;
-            lastY = Grid.MAX_Y + 1;
-        });
-        gridPane.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.PRIMARY && selectedShipLength != -1) {
-                Ship ship = getSelectedShip();
-
-                if (canSelectedShipBePlaced(ship)) {
-                    removeShipFromGridPane(ship);
-                    Game.playerGrid.addShip(ship);
+                    Game.playerGrid.removeShip(coordinates);
+                    incrementShipCount(ship.getLength());
+                    startGameButton.setDisable(true);
                     updateGrid();
-                    clearButton.setDisable(false);
-                    decrementShipCount(selectedShipLength);
-
-                    lastX = Grid.MAX_X + 1;
-                    lastY = Grid.MAX_Y + 1;
-
-                    if (Game.playerGrid.isFullyCompleted()) {
-                        startGameButton.setDisable(false);
-                    }
                 }
-            } else if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                if (selectedShipLength == -1) {
-                    Coordinates coordinates = getGridPaneCoordinatesOfMouse(mouseEvent);
+            } else {
+                removeShipFromGridPane(getSelectedShip());
 
-                    if (Game.playerGrid.hasShip(coordinates)) {
-                        Ship ship = Game.playerGrid.getShip(coordinates);
+                isSelectedShipHorizontal = !isSelectedShipHorizontal;
 
-                        Game.playerGrid.removeShip(coordinates);
-                        incrementShipCount(ship.getLength());
-                        startGameButton.setDisable(true);
-                        updateGrid();
-                    }
-                } else {
-                    removeShipFromGridPane(getSelectedShip());
+                Ship newShip = getSelectedShip();
 
-                    isSelectedShipHorizontal = !isSelectedShipHorizontal;
-
-                    Ship newShip = getSelectedShip();
-
-                    if (canSelectedShipBePlaced(newShip)) {
-                        drawShipSilhouette(newShip);
-                    }
+                if (canSelectedShipBePlaced(newShip)) {
+                    drawShipSilhouette(newShip);
                 }
             }
-        });
+        }
+
     }
 
     // button

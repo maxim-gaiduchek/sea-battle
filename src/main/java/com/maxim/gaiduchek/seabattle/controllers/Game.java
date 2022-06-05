@@ -124,7 +124,7 @@ public class Game {
                     if (playerGrid.getShipsCount(i + 1) > 0) {
                         int len = i + 1;
 
-                        do { // TODO search len-th ships in coordinates, if there is a place for this ship
+                        do {
                             if (random.nextBoolean()) {
                                 x = (random.nextInt(Grid.MAX_X / len + (i == 0 ? 1 : 0)) + 1) * len - 1;
                                 y = random.nextInt(Grid.MAX_Y + 1);

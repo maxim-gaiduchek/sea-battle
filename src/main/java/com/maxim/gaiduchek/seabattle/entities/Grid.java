@@ -168,7 +168,7 @@ public class Grid implements Externalizable {
     // setters
 
     public void addShip(Ship ship) {
-        ship.forEachCoordinate((x, y) -> setShipToCell(ship, x, y));
+        ship.forEachCoordinate((x, y) -> getCell(x, y).setShip(ship));
         shipsCount[ship.getLength() - 1]++;
     }
 
@@ -178,10 +178,6 @@ public class Grid implements Externalizable {
         ship.forEachCoordinate((x, y) -> getCell(x, y).setShip(null));
         shipsCount[ship.getLength() - 1]--;
     }
-
-    private void setShipToCell(Ship ship, int x, int y) {
-        getCell(x, y).setShip(ship);
-    } // TODO remove if will be useless later
 
     private void setShotted(int x, int y) {
         getCell(x, y).setShotted();

@@ -16,9 +16,10 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <Button mnemonicParsing="false" onMouseClicked="#onMainMenuClick" style="-fx-background-color: #323232;" text="У головне меню" textFill="WHITE">
-      <font>
-         <Font name="System Bold" size="12.0" />
-      </font></Button>
+        <font>
+            <Font name="System Bold" size="12.0" />
+        </font>
+    </Button>
     <GridPane GridPane.rowIndex="1">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="550.0" />
@@ -28,7 +29,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
-        <GridPane fx:id="gridPane" gridLinesVisible="true">
+        <GridPane fx:id="gridPane" gridLinesVisible="true" onMouseClicked="#onGridPaneMouseClicked" onMouseExited="#onGridPaneMouseExited" onMouseMoved="#onGridPaneMouseMoved">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" />
