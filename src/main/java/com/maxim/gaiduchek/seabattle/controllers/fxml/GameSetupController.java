@@ -43,7 +43,7 @@ public class GameSetupController {
 
     private int selectedShipLength = -1;
     private boolean isSelectedShipHorizontal = true;
-    private int lastX = Grid.MAX_X, lastY = Grid.MAX_Y;
+    private int lastX = Grid.MAX_X + 1, lastY = Grid.MAX_Y + 1;
 
     public void initialize() {
         Game.reset();
@@ -121,8 +121,7 @@ public class GameSetupController {
     @FXML
     private void onGridPaneMouseExited() {
         removeShipFromGridPane(getSelectedShip());
-        lastX = Grid.MAX_X + 1;
-        lastY = Grid.MAX_Y + 1;
+        resetLastCoordinates();
     }
 
     @FXML
@@ -137,8 +136,7 @@ public class GameSetupController {
                 clearButton.setDisable(false);
                 decrementShipCount(selectedShipLength);
 
-                lastX = Grid.MAX_X + 1;
-                lastY = Grid.MAX_Y + 1;
+                resetLastCoordinates();
 
                 if (Game.playerGrid.isFullyCompleted()) {
                     startGameButton.setDisable(false);
@@ -165,10 +163,11 @@ public class GameSetupController {
 
                 if (canSelectedShipBePlaced(newShip)) {
                     drawShipSilhouette(newShip);
+                } else {
+                    resetLastCoordinates();
                 }
             }
         }
-
     }
 
     // button
@@ -202,6 +201,8 @@ public class GameSetupController {
         updateGrid();
         setAllShipsCounts();
         resetButtonsOpacity();
+        showOnShipDropHints();
+        startGameButton.setDisable(true);
         clearButton.setDisable(true);
     }
 
@@ -345,6 +346,10 @@ public class GameSetupController {
     private void resetShipSelection() {
         selectedShipLength = -1;
         isSelectedShipHorizontal = true;
+        resetLastCoordinates();
+    }
+
+    private void resetLastCoordinates() {
         lastX = Grid.MAX_X + 1;
         lastY = Grid.MAX_Y + 1;
     }
