@@ -27,6 +27,8 @@ public class GameSetupController {
     @FXML
     private Button generateButton;
     @FXML
+    private Button clearButton;
+    @FXML
     private GridPane gridPane;
     @FXML
     private GridPane shipsContainer;
@@ -126,6 +128,7 @@ public class GameSetupController {
                     removeShipFromGridPane(ship);
                     Game.playerGrid.addShip(ship);
                     updateGrid();
+                    clearButton.setDisable(false);
                     decrementShipCount(selectedShipLength);
 
                     lastX = Grid.MAX_X + 1;
@@ -175,9 +178,20 @@ public class GameSetupController {
         generateButton.setDisable(true);
         Game.generatePlayerGrid();
         updateGrid();
-        setAllShipsCountsToZero();
+        setAllShipsCounts();
         startGameButton.setDisable(false);
         generateButton.setDisable(false);
+        clearButton.setDisable(false);
+    }
+
+    @FXML
+    private void onClearButtonClick() {
+        resetShipSelection();
+        Game.reset();
+        updateGrid();
+        setAllShipsCounts();
+        resetButtonsOpacity();
+        clearButton.setDisable(true);
     }
 
     // utils
@@ -264,10 +278,18 @@ public class GameSetupController {
         }
     }
 
-    private void setAllShipsCountsToZero() {
+    private void setAllShipsCounts() {
         Grid.forEachShipLength(length -> {
-            shipsLabels.get(length - 1).setText("0/" + (Grid.MAX_SHIP_LENGTH - length + 1));
-            setShipSelectInactive(length);
+            int maxCount = Grid.MAX_SHIP_LENGTH - length + 1;
+            int count = maxCount - Game.playerGrid.getShipsCount(length);
+
+            shipsLabels.get(length - 1).setText(count + "/" + maxCount);
+
+            if (count <= 0) {
+                setShipSelectInactive(length);
+            } else {
+                setShipSelectActive(length);
+            }
         });
     }
 
