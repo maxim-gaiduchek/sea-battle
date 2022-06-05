@@ -35,7 +35,7 @@ public class App extends Application {
     }
 
     public static void openGameSetupView() throws IOException {
-        openView("game-setup-view", 800, 600);
+        openView("game-setup-view", 800, 650);
     }
 
     public static void openMainGameView() throws IOException {
@@ -145,14 +145,6 @@ public class App extends Application {
         transition.setToY(1);
 
         transition.play();
-    }
-
-    public static void playRotateAnimation(Node node) {
-        RotateTransition rotate = new RotateTransition(Duration.millis(200), node);
-
-        rotate.setToAngle(node.getRotate() + 90);
-
-        rotate.play();
     }
 
     // main

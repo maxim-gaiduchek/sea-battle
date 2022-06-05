@@ -168,6 +168,11 @@ public class GameSetupController {
     // button
 
     @FXML
+    private void onMainMenuClick() throws IOException {
+        App.openMainMenuView();
+    }
+
+    @FXML
     private void onGameStartClick() throws IOException {
         App.openMainGameView();
     }

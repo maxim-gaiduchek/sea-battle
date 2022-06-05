@@ -6,15 +6,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maxim.gaiduchek.seabattle.controllers.fxml.GameSetupController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maxim.gaiduchek.seabattle.controllers.fxml.GameSetupController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="600.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0" />
     </columnConstraints>
     <rowConstraints>
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
-    <GridPane>
+    <Button mnemonicParsing="false" onMouseClicked="#onMainMenuClick" style="-fx-background-color: #323232;" text="У головне меню" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font></Button>
+    <GridPane GridPane.rowIndex="1">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="550.0" />
             <ColumnConstraints hgrow="SOMETIMES" />
@@ -198,7 +203,7 @@
             </Label>
         </GridPane>
     </GridPane>
-    <GridPane GridPane.columnIndex="1">
+    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints />
