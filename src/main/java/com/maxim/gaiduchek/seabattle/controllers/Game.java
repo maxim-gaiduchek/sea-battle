@@ -120,7 +120,7 @@ public class Game {
             } else {
                 Random random = new Random();
 
-                for (int i = playerGrid.getShipsCountLength() - 1; i >= 0; i--) {
+                for (int i = Grid.MAX_SHIP_LENGTH - 1; i >= 0; i--) {
                     if (playerGrid.getShipsCount(i + 1) > 0) {
                         int len = i + 1;
 

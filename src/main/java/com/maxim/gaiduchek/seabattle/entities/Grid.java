@@ -33,42 +33,100 @@ public class Grid implements Externalizable {
         Grid grid = new Grid();
         Random random = new Random();
 
-        forEachShip(length -> {
-            Coordinates begin, end;
+        for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
+            if (length == 1 && !validateLength1(grid)) {
+                length = MAX_SHIP_LENGTH + 1;
+                grid = new Grid();
+                continue;
+            }
 
-            while (true) {
-                if (random.nextBoolean()) {
-                    int x = random.nextInt(MAX_X - length + 2), y = random.nextInt(MAX_Y + 1);
-
-                    begin = new Coordinates(x, y);
-                    end = new Coordinates(x + length - 1, y);
-                } else {
-                    int x = random.nextInt(MAX_X + 1), y = random.nextInt(MAX_Y - length + 2);
-
-                    begin = new Coordinates(x, y);
-                    end = new Coordinates(x, y + length - 1);
+            for (int count = MAX_SHIP_LENGTH - length + 1; count >= 1; count--) {
+                if (length == 2 && !validateLength2(grid)) {
+                    length = MAX_SHIP_LENGTH + 1;
+                    grid = new Grid();
+                    break;
                 }
 
-                boolean toBreak = true;
+                Coordinates begin, end;
 
-                for (int x = begin.x(); x <= end.x() && toBreak; x++) {
-                    for (int y = begin.y(); y <= end.y() && toBreak; y++) {
-                        if (grid.hasShipNearby(x, y)) {
-                            toBreak = false;
+                while (true) {
+                    if (random.nextBoolean()) {
+                        int x = random.nextInt(MAX_X - length + 2), y = random.nextInt(MAX_Y + 1);
+
+                        begin = new Coordinates(x, y);
+                        end = new Coordinates(x + length - 1, y);
+                    } else {
+                        int x = random.nextInt(MAX_X + 1), y = random.nextInt(MAX_Y - length + 2);
+
+                        begin = new Coordinates(x, y);
+                        end = new Coordinates(x, y + length - 1);
+                    }
+
+                    boolean toBreak = true;
+
+                    for (int x = begin.x(); x <= end.x() && toBreak; x++) {
+                        for (int y = begin.y(); y <= end.y() && toBreak; y++) {
+                            if (grid.hasShipNearby(x, y)) {
+                                toBreak = false;
+                            }
                         }
+                    }
+
+                    if (toBreak) {
+                        break;
                     }
                 }
 
-                if (toBreak) break;
+                grid.addShip(new Ship(begin, end));
             }
-
-            grid.addShip(new Ship(begin, end));
-        });
+        }
 
         System.out.println("Randomly generated grid:");
         grid.outputGrid();
 
         return grid;
+    }
+
+    private static Coordinates getFreeCellNearby(Grid grid, int x, int y) {
+        if (0 <= x - 1 && !grid.isShotted(x - 1, y)) {
+            return new Coordinates(x - 1, y);
+        }
+        if (x + 1 <= MAX_X && !grid.isShotted(x + 1, y)) {
+            return new Coordinates(x + 1, y);
+        }
+        if (0 <= y - 1 && !grid.isShotted(x, y - 1)) {
+            return new Coordinates(x, y - 1);
+        }
+        if (y + 1 <= MAX_Y && !grid.isShotted(x, y + 1)) {
+            return new Coordinates(x, y + 1);
+        }
+        return null;
+    }
+
+    private static boolean validateLength1(Grid grid) {
+        int count = 0;
+
+        for (int x = 0; x <= MAX_X && count < MAX_SHIP_LENGTH; x++) {
+            for (int y = 0; y <= MAX_Y && count < MAX_SHIP_LENGTH; y++) {
+                if (grid.isCellFree(x, y) && getFreeCellNearby(grid, x, y) == null) {
+                    count++;
+                }
+            }
+        }
+
+        return count != MAX_SHIP_LENGTH;
+    }
+
+    private static boolean validateLength2(Grid grid) {
+        for (int x = 0; x <= MAX_X; x++) {
+            for (int y = 0; y <= MAX_Y; y++) {
+                if (grid.isCellFree(x, y) && getFreeCellNearby(grid, x, y) != null) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     // getters
@@ -93,10 +151,6 @@ public class Grid implements Externalizable {
         return shipsCount[shipLength - 1];
     }
 
-    public int getShipsCountLength() {
-        return shipsCount.length;
-    }
-
     // booleans
 
     public boolean isLengthNotCompleted(int shipLength) {
@@ -111,6 +165,10 @@ public class Grid implements Externalizable {
         }
 
         return true;
+    }
+
+    public boolean isCellFree(int x, int y) {
+        return getCell(x, y).isFree();
     }
 
     public boolean hasShip(int x, int y) {
@@ -274,27 +332,21 @@ public class Grid implements Externalizable {
                 }
             }
         }
-        forEachShip(length -> {
-            try {
-                Coordinates begin = new Coordinates(in.readByte(), in.readByte());
-                Coordinates end = new Coordinates(in.readByte(), in.readByte());
+        forEachShipLength(length -> {
+            for (int i = MAX_SHIP_LENGTH - length + 1; i >= 1; i--) {
+                try {
+                    Coordinates begin = new Coordinates(in.readByte(), in.readByte());
+                    Coordinates end = new Coordinates(in.readByte(), in.readByte());
 
-                addShip(new Ship(begin, end));
-            } catch (IOException e) {
-                e.printStackTrace();
+                    addShip(new Ship(begin, end));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
     // for each
-
-    public static void forEachShip(Consumer<Integer> function) {
-        forEachShipLength(length -> {
-            for (int i = MAX_SHIP_LENGTH - length + 1; i >= 1; i--) {
-                function.accept(length);
-            }
-        });
-    }
 
     public static void forEachShipLength(Consumer<Integer> function) {
         for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {

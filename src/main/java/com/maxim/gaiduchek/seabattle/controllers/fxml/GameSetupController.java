@@ -241,9 +241,9 @@ public class GameSetupController {
     }
 
     private void resetButtonsOpacity() {
-        for (Node node1 : shipsContainer.getChildren()) {
-            if (node1 instanceof Button) {
-                node1.setOpacity(0);
+        for (Node node : shipsContainer.getChildren()) {
+            if (node instanceof Button) {
+                node.setOpacity(0);
             }
         }
     }
@@ -275,6 +275,7 @@ public class GameSetupController {
             setShipSelectInactive(shipLength);
             resetButtonsOpacity();
             resetShipSelection();
+            showOnShipDropHints();
         }
     }
 

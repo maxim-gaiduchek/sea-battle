@@ -27,6 +27,10 @@ public class Cell {
         return shotted;
     }
 
+    public boolean isFree() {
+        return !shotted && !hasShip();
+    }
+
     // setters
 
     public void setShip(Ship ship) {
