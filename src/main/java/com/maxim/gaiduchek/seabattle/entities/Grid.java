@@ -34,14 +34,8 @@ public class Grid implements Externalizable {
         Random random = new Random();
 
         for (int length = MAX_SHIP_LENGTH; length >= 1; length--) {
-            if (length == 1 && !validateLength1(grid)) {
-                length = MAX_SHIP_LENGTH + 1;
-                grid = new Grid();
-                continue;
-            }
-
             for (int count = MAX_SHIP_LENGTH - length + 1; count >= 1; count--) {
-                if (length == 2 && !validateLength2(grid)) {
+                if (length == 2 && !validateLength2(grid) || length == 1 && !validateLength1(grid)) {
                     length = MAX_SHIP_LENGTH + 1;
                     grid = new Grid();
                     break;
@@ -72,12 +66,15 @@ public class Grid implements Externalizable {
                         }
                     }
 
+                    grid.outputGrid();
+
                     if (toBreak) {
                         break;
                     }
                 }
 
                 grid.addShip(new Ship(begin, end));
+                grid.outputGrid();
             }
         }
 
@@ -87,40 +84,35 @@ public class Grid implements Externalizable {
         return grid;
     }
 
-    private static Coordinates getFreeCellNearby(Grid grid, int x, int y) {
+    private static boolean getFreeCellNearby(Grid grid, int x, int y) {
         if (0 <= x - 1 && !grid.isShotted(x - 1, y)) {
-            return new Coordinates(x - 1, y);
+            return true;
         }
         if (x + 1 <= MAX_X && !grid.isShotted(x + 1, y)) {
-            return new Coordinates(x + 1, y);
+            return true;
         }
         if (0 <= y - 1 && !grid.isShotted(x, y - 1)) {
-            return new Coordinates(x, y - 1);
+            return true;
         }
-        if (y + 1 <= MAX_Y && !grid.isShotted(x, y + 1)) {
-            return new Coordinates(x, y + 1);
-        }
-        return null;
+        return y + 1 <= MAX_Y && !grid.isShotted(x, y + 1);
     }
 
     private static boolean validateLength1(Grid grid) {
-        int count = 0;
-
-        for (int x = 0; x <= MAX_X && count < MAX_SHIP_LENGTH; x++) {
-            for (int y = 0; y <= MAX_Y && count < MAX_SHIP_LENGTH; y++) {
-                if (grid.isCellFree(x, y) && getFreeCellNearby(grid, x, y) == null) {
-                    count++;
+        for (int x = 0; x <= MAX_X; x++) {
+            for (int y = 0; y <= MAX_Y; y++) {
+                if (grid.isCellFree(x, y)) {
+                    return true;
                 }
             }
         }
 
-        return count != MAX_SHIP_LENGTH;
+        return false;
     }
 
     private static boolean validateLength2(Grid grid) {
         for (int x = 0; x <= MAX_X; x++) {
             for (int y = 0; y <= MAX_Y; y++) {
-                if (grid.isCellFree(x, y) && getFreeCellNearby(grid, x, y) != null) {
+                if (grid.isCellFree(x, y) && getFreeCellNearby(grid, x, y)) {
                     return true;
                 }
             }
@@ -168,7 +160,7 @@ public class Grid implements Externalizable {
     }
 
     public boolean isCellFree(int x, int y) {
-        return getCell(x, y).isFree();
+        return getCell(x, y).isFree() && !hasShipNearby(x, y);
     }
 
     public boolean hasShip(int x, int y) {
