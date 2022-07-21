@@ -96,7 +96,7 @@ public class Game {
 
     public static void playerShot(int x, int y) {
         if (isPlayerMoving && !botGrid.isShotted(x, y)) {
-            isPlayerMoving = botGrid.shot(botGridPane, x, y);
+            isPlayerMoving = botGrid.shot(botGridPane, x, y, false);
 
             if (botGrid.isDefeated()) {
                 Platform.runLater(() -> App.openEndGameAlert("ВИ ВИЙГРАЛИ!!!"));
@@ -139,7 +139,7 @@ public class Game {
                 }
             }
 
-            if (playerGrid.shot(playerGridPane, x, y)) {
+            if (playerGrid.shot(playerGridPane, x, y, true)) {
                 if (playerGrid.isDefeated()) {
                     Platform.runLater(() -> App.openEndGameAlert("Ви програли :("));
                 } else {

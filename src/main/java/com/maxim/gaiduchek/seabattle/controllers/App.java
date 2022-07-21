@@ -64,6 +64,10 @@ public class App extends Application {
         return getGridCellImageView("missed-shot");
     }
 
+    public static ImageView getEnemyMissedShotImageView() {
+        return getGridCellImageView("enemy-missed-shot");
+    }
+
     public static ImageView getCornerShipImageView() {
         return getGridCellImageView("corner-ship-part");
     }

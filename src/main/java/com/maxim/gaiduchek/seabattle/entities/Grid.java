@@ -239,7 +239,7 @@ public class Grid implements Externalizable {
 
     // other
 
-    public boolean shot(GridPane gridPane, int x, int y) {
+    public boolean shot(GridPane gridPane, int x, int y, boolean isEnemy) {
         if (!isShotted(x, y)) {
             setShotted(x, y);
 
@@ -255,7 +255,8 @@ public class Grid implements Externalizable {
                                 gridPane.add(ship.getShipPart(cx, cy), cx, cy);
                                 gridPane.add(App.getHitShotImageView(), cx, cy);
                             } else if (!isShotted(cx, cy)) {
-                                gridPane.add(App.getMissedShotImageView(), cx, cy);
+                                gridPane.add(isEnemy ? App.getEnemyMissedShotImageView() : App.getMissedShotImageView(),
+                                        cx, cy);
                             }
                             setShotted(cx, cy);
                         }
@@ -269,7 +270,7 @@ public class Grid implements Externalizable {
 
                 return true;
             } else {
-                ImageView missedShot = App.getMissedShotImageView();
+                ImageView missedShot = isEnemy ? App.getEnemyMissedShotImageView() : App.getMissedShotImageView();
 
                 gridPane.add(missedShot, x, y);
                 App.playAppearingAnimation(missedShot);

@@ -19,6 +19,12 @@ public class MainGameController {
             Game.generateBotGrid();
         }
 
+        Grid.forEachCoordinate((x, y) -> {
+            if (Game.playerGrid.hasShip(x, y)) {
+                playerGripPane.add(Game.playerGrid.getShip(x, y).getShipPart(x, y), x, y);
+            }
+        });
+
         Game.setPlayerGridPane(playerGripPane);
         Game.setBotGridPane(botGridPane);
 
@@ -38,12 +44,12 @@ public class MainGameController {
 
             botGridPane.add(button, x, y);
 
-            drawCell(playerGripPane, Game.playerGrid, x, y);
-            drawCell(botGridPane, Game.botGrid, x, y);
+            drawCell(playerGripPane, Game.playerGrid, x, y, true);
+            drawCell(botGridPane, Game.botGrid, x, y, false);
         });
     }
 
-    private void drawCell(GridPane gridPane, Grid grid, int x, int y) {
+    private void drawCell(GridPane gridPane, Grid grid, int x, int y, boolean isEnemy) {
         if (grid.isShotted(x, y)) {
             if (grid.hasShip(x, y)) {
                 if (grid.isDestroyed(x, y)) {
@@ -51,7 +57,7 @@ public class MainGameController {
                 }
                 gridPane.add(App.getHitShotImageView(), x, y);
             } else {
-                gridPane.add(App.getMissedShotImageView(), x, y);
+                gridPane.add(isEnemy ? App.getEnemyMissedShotImageView() : App.getMissedShotImageView(), x, y);
             }
         }
     }
